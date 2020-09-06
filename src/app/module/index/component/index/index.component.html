@@ -1,21 +1,30 @@
-<form>
-  <mat-form-field>
-    <mat-label>搜索</mat-label>
-    <!--suppress HtmlFormInputWithoutLabel -->
-    <input matInput type="search" [formControl]="musicSearchFormControl">
-    <mat-icon matSuffix (click)="onSearch()">search</mat-icon>
-  </mat-form-field>
-</form>
-<mat-list>
-  <mat-list-item *ngFor="let item of list">
-    <button (click)="doOnClick(item.musicId)" mat-button
-            color="primary">{{(nowPlayingMusicId === item.musicId && isPlay) ? "暂停" : "播放"}}</button>
-    {{item.name}}-{{item.singer}}
-  </mat-list-item>
-</mat-list>
-<mat-paginator [length]="originalResponse.totalElements"
-               [pageSize]="originalResponse.size"
-               [pageIndex]="originalResponse.number"
-               [pageSizeOptions]="[5, 10, 25, 100]"
-               (page)="onPageChange($event)">
-</mat-paginator>
+<ng-container>
+  <mat-toolbar color="primary" class="index-header">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-sidenav-container class="index-container">
+    <mat-sidenav #sidenav mode="over" class="index-sidenav" fixedInViewport="true">
+      Sidenav
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-list>
+        <mat-list-item *ngFor="let item of list">
+          <button (click)="doOnClick(item.musicId)" mat-button
+                  color="primary">{{(nowPlayingMusicId === item.musicId && isPlay) ? "暂停" : "播放"}}</button>
+          {{item.name}}-{{item.singer}}
+        </mat-list-item>
+      </mat-list>
+      <mat-paginator [length]="originalResponse.totalElements"
+                     [pageSize]="originalResponse.size"
+                     [pageIndex]="originalResponse.number"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     (page)="onPageChange($event)">
+      </mat-paginator>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <mat-toolbar class="index-footer">
+    <p>Footer</p>
+  </mat-toolbar>
+</ng-container>

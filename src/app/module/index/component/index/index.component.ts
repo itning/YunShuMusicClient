@@ -18,7 +18,6 @@ export class IndexComponent implements OnInit {
   nowPlayingMusicId: string;
   audio: HTMLAudioElement;
   isPlay = false;
-  searchKeyWord: string;
   musicSearchFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -76,8 +75,8 @@ export class IndexComponent implements OnInit {
   }
 
   onSearch(): void {
-    console.log(this.searchKeyWord);
-    this.http.get<Page<Music>>(`${this.host}music/search?keyword=${this.searchKeyWord}`)
+    console.log(this.musicSearchFormControl.value);
+    this.http.get<Page<Music>>(`${this.host}music/search?keyword=${this.musicSearchFormControl.value}`)
       .subscribe(musics => {
         this.refreshMusicList(musics);
         console.log(musics.content);
