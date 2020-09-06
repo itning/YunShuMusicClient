@@ -19,8 +19,7 @@ export class IndexComponent implements OnInit {
   audio: HTMLAudioElement;
   isPlay = false;
   musicSearchFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
+    Validators.required
   ]);
 
   constructor(private http: HttpClient) {

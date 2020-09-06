@@ -1,6 +1,6 @@
 .index-container {
   position: absolute;
-  top: 56px;
+  top: 60px;
   bottom: 60px;
   left: 0;
   right: 0;
@@ -25,4 +25,12 @@
   bottom: 0;
   left: 0;
   right: 0;
+}
+.search-form {
+  min-width: 150px;
+  width: 100%;
+}
+
+.search-full-width {
+  width: 100%;
 }

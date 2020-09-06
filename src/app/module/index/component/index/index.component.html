@@ -3,6 +3,15 @@
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
+    <form class="search-form">
+      <mat-form-field class="search-full-width">
+        <!--suppress HtmlFormInputWithoutLabel -->
+        <input matInput [formControl]="musicSearchFormControl">
+      </mat-form-field>
+    </form>
+    <button mat-icon-button (click)="onSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
   </mat-toolbar>
   <mat-sidenav-container class="index-container">
     <mat-sidenav #sidenav mode="over" class="index-sidenav" fixedInViewport="true">
