@@ -1,0 +1,21 @@
+<form>
+  <mat-form-field>
+    <mat-label>搜索</mat-label>
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <input matInput type="search" [formControl]="musicSearchFormControl">
+    <mat-icon matSuffix (click)="onSearch()">search</mat-icon>
+  </mat-form-field>
+</form>
+<mat-list>
+  <mat-list-item *ngFor="let item of list">
+    <button (click)="doOnClick(item.musicId)" mat-button
+            color="primary">{{(nowPlayingMusicId === item.musicId && isPlay) ? "暂停" : "播放"}}</button>
+    {{item.name}}-{{item.singer}}
+  </mat-list-item>
+</mat-list>
+<mat-paginator [length]="originalResponse.totalElements"
+               [pageSize]="originalResponse.size"
+               [pageIndex]="originalResponse.number"
+               [pageSizeOptions]="[5, 10, 25, 100]"
+               (page)="onPageChange($event)">
+</mat-paginator>
