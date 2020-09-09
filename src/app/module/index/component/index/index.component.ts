@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Page} from '../../../../entity/page/Page';
 import {Music} from '../../../../entity/Music';
 import {PageEvent} from '@angular/material/paginator';
 import {HttpClient} from '@angular/common/http';
 import {FormControl, Validators} from '@angular/forms';
+import {MusicService} from '../../../../service/music.service';
+import {FileService} from '../../../../service/file.service';
+import {mergeMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-index',
@@ -11,26 +14,31 @@ import {FormControl, Validators} from '@angular/forms';
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
+  private host = 'http://localhost:8888/';
 
-  private host = 'http://192.168.1.102:8888/';
   list: Music[];
   originalResponse: Page<Music> = new Page();
   nowPlayingMusicId: string;
-  audio: HTMLAudioElement;
   isPlay = false;
   musicSearchFormControl = new FormControl('', [
     Validators.required
   ]);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private musicService: MusicService,
+              private fileService: FileService) {
   }
 
   ngOnInit(): void {
     this.initMusicList();
+    this.musicService.onPlayChangeEvent.subscribe((status) => {
+      console.log('play status changed:', status);
+      this.isPlay = status;
+    });
   }
 
-  private initMusicList(page = 0): void {
-    this.http.get<Page<Music>>(`${this.host}music?page=${page}`)
+  private initMusicList(page = 0, size = 20): void {
+    this.http.get<Page<Music>>(`${this.host}music?page=${page}&size=${size}`)
       .subscribe(musics => {
         this.refreshMusicList(musics);
         console.log(musics.content);
@@ -44,33 +52,29 @@ export class IndexComponent implements OnInit {
 
   doOnClick(musicId: string): void {
     if (this.nowPlayingMusicId !== musicId) {
-      if (this.audio !== undefined) {
-        this.audio.pause();
-      }
-      this.http.get(`${this.host}file?id=${musicId}`, {responseType: 'blob'})
-        .subscribe(v => {
-          const objectURL: string = window.URL.createObjectURL(v);
-          console.log(objectURL);
-          this.audio = new Audio(objectURL);
-          this.audio.play().then(() => {
-            console.log('改变');
-            this.isPlay = true;
+      this.fileService.getMusicFileToObjectUrl(musicId)
+        .pipe(
+          mergeMap((value: string) => this.musicService.changePlay(value))
+        )
+        .subscribe((status) => {
+          if (status) {
             this.nowPlayingMusicId = musicId;
-          });
+          } else {
+            alert('播放失败');
+          }
         });
     } else {
-      if (this.isPlay) {
-        this.audio.pause();
+      if (this.musicService.isPlayingNow()) {
+        this.musicService.pause().subscribe();
       } else {
-        this.audio.play();
+        this.musicService.play().subscribe();
       }
-      this.isPlay = !this.isPlay;
     }
   }
 
   onPageChange(pageEvent: PageEvent): void {
     console.log(pageEvent);
-    this.initMusicList(pageEvent.pageIndex);
+    this.initMusicList(pageEvent.pageIndex, pageEvent.pageSize);
   }
 
   onSearch(): void {
