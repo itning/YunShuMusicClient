@@ -8,7 +8,7 @@ import {Observable, Subscriber} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class MusicService {
+export class MusicPlayService {
   private readonly audio = new Audio();
   /**
    * 播放状态改变事件发射器
