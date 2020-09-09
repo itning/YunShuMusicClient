@@ -1,13 +1,26 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subscriber} from 'rxjs';
 
+/**
+ * 音乐服务
+ * 我只关心播放状态和播放什么
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class MusicService {
   private audio = new Audio();
+  /**
+   * 当前正在播放吗
+   */
   private isPlaying = false;
+  /**
+   * 播放状态改变事件发射器
+   */
   private playObserver: Subscriber<boolean>;
+  /**
+   * 播放状态改变事件
+   */
   onPlayChangeEvent: Observable<boolean>;
 
   constructor() {
@@ -16,7 +29,7 @@ export class MusicService {
     });
   }
 
-  changePlay(objectUrl: string): Observable<boolean> {
+  start(objectUrl: string): Observable<boolean> {
     this.audio.src = objectUrl;
     this.audio.load();
     this.isPlaying = false;

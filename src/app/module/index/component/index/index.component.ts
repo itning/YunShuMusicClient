@@ -54,7 +54,7 @@ export class IndexComponent implements OnInit {
     if (this.nowPlayingMusicId !== musicId) {
       this.fileService.getMusicFileToObjectUrl(musicId)
         .pipe(
-          mergeMap((value: string) => this.musicService.changePlay(value))
+          mergeMap((url: string) => this.musicService.start(url))
         )
         .subscribe((status) => {
           if (status) {
