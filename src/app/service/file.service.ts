@@ -7,7 +7,7 @@ import {map} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class FileService {
-  private host = 'http://localhost:8888/';
+  private readonly host = 'http://localhost:8888/';
 
   constructor(private http: HttpClient) {
   }

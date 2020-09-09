@@ -14,7 +14,7 @@ import {mergeMap} from 'rxjs/operators';
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-  private host = 'http://localhost:8888/';
+  private readonly host = 'http://localhost:8888/';
 
   list: Music[];
   originalResponse: Page<Music> = new Page();
@@ -34,6 +34,9 @@ export class IndexComponent implements OnInit {
     this.musicService.onPlayChangeEvent.subscribe((status) => {
       console.log('play status changed:', status);
       this.isPlay = status;
+    });
+    this.musicService.onTimeChangeEvent.subscribe(time => {
+      console.log(time);
     });
   }
 
