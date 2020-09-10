@@ -128,29 +128,27 @@ export class IndexComponent implements OnInit {
         break;
       case PlayEvent.NEXT:
         console.log('下一曲');
-        this.musicListService.getNextMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse).subscribe(nextMusic => {
-          this.musicPlayService.start(this.fileService.getMusicFileUrl(nextMusic.musicId))
-            .subscribe((status) => {
-              if (status) {
-                this.nowPlayingMusicId = nextMusic.musicId;
-              } else {
-                alert('播放失败');
-              }
-            });
-        });
+        const nextMusic = this.musicListService.getNextMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse);
+        this.musicPlayService.start(this.fileService.getMusicFileUrl(nextMusic.musicId))
+          .subscribe((status) => {
+            if (status) {
+              this.nowPlayingMusicId = nextMusic.musicId;
+            } else {
+              alert('播放失败');
+            }
+          });
         break;
       case PlayEvent.PREVIOUS:
         console.log('上一曲');
-        this.musicListService.getPreviousMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse).subscribe(nextMusic => {
-          this.musicPlayService.start(this.fileService.getMusicFileUrl(nextMusic.musicId))
-            .subscribe((status) => {
-              if (status) {
-                this.nowPlayingMusicId = nextMusic.musicId;
-              } else {
-                alert('播放失败');
-              }
-            });
-        });
+        const previousMusic = this.musicListService.getPreviousMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse);
+        this.musicPlayService.start(this.fileService.getMusicFileUrl(previousMusic.musicId))
+          .subscribe((status) => {
+            if (status) {
+              this.nowPlayingMusicId = previousMusic.musicId;
+            } else {
+              alert('播放失败');
+            }
+          });
         break;
       default:
     }

@@ -36,7 +36,7 @@
       <mat-paginator [length]="originalResponse.totalElements"
                      [pageSize]="originalResponse.size"
                      [pageIndex]="originalResponse.number"
-                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     [pageSizeOptions]="[20, 50, 100, 1000]"
                      (page)="onPageChange($event)">
       </mat-paginator>
     </mat-sidenav-content>
