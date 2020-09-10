@@ -44,7 +44,7 @@ export class IndexComponent implements OnInit {
     this.musicPlayService.onTimeChangeEvent.subscribe((time) => {
       this.musicTimeChangeEvent = time;
     });
-    this.musicPlayService.onEndChangeEvent.subscribe(() => {
+    this.musicPlayService.onPlayEndEvent.subscribe(() => {
       if (this.playMode === PlayMode.REPEAT) {
         this.musicPlayService.start(this.fileService.getMusicFileUrl(this.nowPlayingMusicId)).subscribe((status) => {
             if (!status) {
