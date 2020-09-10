@@ -6,7 +6,6 @@ import {HttpClient} from '@angular/common/http';
 import {FormControl, Validators} from '@angular/forms';
 import {MusicPlaybackDurationChangeEvent, MusicPlayService} from '../../../../service/music-play.service';
 import {FileService} from '../../../../service/file.service';
-import {mergeMap} from 'rxjs/operators';
 import {MusicListService, PlayMode} from '../../../../service/music-list.service';
 import {PlayEvent} from '../control/control.component';
 
@@ -18,6 +17,7 @@ import {PlayEvent} from '../control/control.component';
 export class IndexComponent implements OnInit {
   private isSearch = false;
   private searchKeyword: string;
+  private playMode = PlayMode.LOOP;
 
   list: Music[];
   originalResponse: Page<Music> = new Page();
@@ -44,6 +44,7 @@ export class IndexComponent implements OnInit {
     this.musicPlayService.onTimeChangeEvent.subscribe((time) => {
       this.musicTimeChangeEvent = time;
     });
+    this.musicPlayService.onEndChangeEvent.subscribe(() => this.onPlayStatusChange(PlayEvent.NEXT));
   }
 
   private refreshMusicList(originalResponse: Page<Music>): void {
@@ -112,6 +113,16 @@ export class IndexComponent implements OnInit {
         break;
       case PlayEvent.NEXT:
         console.log('下一曲');
+        this.musicListService.getNextMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse).subscribe(nextMusic => {
+          this.musicPlayService.start(this.fileService.getMusicFileUrl(nextMusic.musicId))
+            .subscribe((status) => {
+              if (status) {
+                this.nowPlayingMusicId = nextMusic.musicId;
+              } else {
+                alert('播放失败');
+              }
+            });
+        });
         break;
       case PlayEvent.PREVIOUS:
         console.log('上一曲');
@@ -122,5 +133,6 @@ export class IndexComponent implements OnInit {
 
   onPlayModeChange(mode: PlayMode): void {
     console.log(mode);
+    this.playMode = mode;
   }
 }

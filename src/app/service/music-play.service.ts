@@ -18,6 +18,8 @@ export class MusicPlayService {
    * 时间状态改变事件发射器
    */
   private timeObserver: Subscriber<MusicPlaybackDurationChangeEvent>;
+
+  private endObserver: Subscriber<void>;
   /**
    * 播放状态改变事件
    */
@@ -27,6 +29,8 @@ export class MusicPlayService {
    */
   onTimeChangeEvent: Observable<MusicPlaybackDurationChangeEvent>;
 
+  onEndChangeEvent: Observable<void>;
+
   constructor() {
     this.onPlayChangeEvent = new Observable<boolean>((observer) => {
       this.playObserver = observer;
@@ -34,11 +38,17 @@ export class MusicPlayService {
     this.onTimeChangeEvent = new Observable<MusicPlaybackDurationChangeEvent>((observer) => {
       this.timeObserver = observer;
     });
+    this.onEndChangeEvent = new Observable<void>((observer) => {
+      this.endObserver = observer;
+    });
 
     this.audio.ondurationchange = this.musicChangeEventHandlers;
     this.audio.ontimeupdate = this.musicChangeEventHandlers;
 
-    this.audio.onended = () => this.playObserver.next(false);
+    this.audio.onended = () => {
+      this.playObserver.next(false);
+      this.endObserver.next();
+    };
   }
 
   private musicChangeEventHandlers = () => {
