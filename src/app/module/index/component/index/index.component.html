@@ -20,7 +20,8 @@
     <mat-sidenav-content>
       <mat-selection-list [multiple]="false"
                           (selectionChange)="doOnClick($event.option.value)">
-        <mat-list-option *ngFor="let item of list;let i=index" [value]="item.musicId">
+        <mat-list-option *ngFor="let item of list;let i=index" [value]="item.musicId"
+                         [selected]="item.musicId===nowPlayingMusicId">
           <div class="music-list-item">
             <div class="music-list-item-index">{{i + 1}}</div>
             <div>

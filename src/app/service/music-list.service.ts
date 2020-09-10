@@ -44,14 +44,16 @@ export class MusicListService {
       for (let i = 0; i < originalResponse.content.length; i++) {
         if (originalResponse.content[i].musicId === nowPlayingMusicId) {
           if (i - 1 === -1) {
-            return this.getMusicList(originalResponse.totalPages - 1, originalResponse.size).pipe(map(m => m.content[0]));
+            return this.getMusicList(originalResponse.totalPages - 1, originalResponse.size)
+              .pipe(map(m => m.content[m.content.length - 1]));
           } else {
             index = i - 1;
           }
         }
       }
     } else {
-      return this.getMusicList(originalResponse.totalPages - 1, originalResponse.size).pipe(map(m => m.content[0]));
+      return this.getMusicList(originalResponse.totalPages - 1, originalResponse.size)
+        .pipe(map(m => m.content[m.content.length - 1]));
     }
     return of(originalResponse.content[index]);
   }
