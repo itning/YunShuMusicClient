@@ -43,6 +43,17 @@ export class MusicListService {
     return originalResponse.content[index];
   }
 
+  private static getSongsRandomly(nowPlayingMusicId: string, originalResponse: Page<Music>): Music {
+    if (originalResponse.content.length < 2) {
+      return originalResponse.content.find(music => music.musicId === nowPlayingMusicId);
+    }
+    if (originalResponse.content.length === 2) {
+      return originalResponse.content.find(music => music.musicId !== nowPlayingMusicId);
+    }
+    const index = Math.floor(Math.random() * originalResponse.content.length - 1);
+    return originalResponse.content.filter(music => music.musicId !== nowPlayingMusicId)[index];
+  }
+
   getMusicList(page = 0, size = 1000): Observable<Page<Music>> {
     return this.http.get<Page<Music>>(`${this.host}music?page=${page}&size=${size}`);
   }
@@ -57,8 +68,7 @@ export class MusicListService {
       case PlayMode.REPEAT:
         return MusicListService.listLoopToGetTheNextSong(nowPlayingMusicId, originalResponse);
       case PlayMode.RANDOM:
-        // TODO 随机歌曲算法
-        return MusicListService.listLoopToGetTheNextSong(nowPlayingMusicId, originalResponse);
+        return MusicListService.getSongsRandomly(nowPlayingMusicId, originalResponse);
     }
   }
 
@@ -68,8 +78,7 @@ export class MusicListService {
       case PlayMode.REPEAT:
         return MusicListService.listLoopToGetThePreviousSong(nowPlayingMusicId, originalResponse);
       case PlayMode.RANDOM:
-        // TODO 随机歌曲算法
-        return MusicListService.listLoopToGetThePreviousSong(nowPlayingMusicId, originalResponse);
+        return MusicListService.getSongsRandomly(nowPlayingMusicId, originalResponse);
     }
   }
 }

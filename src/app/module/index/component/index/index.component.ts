@@ -3,7 +3,6 @@ import {Page} from '../../../../entity/page/Page';
 import {Music} from '../../../../entity/Music';
 import {PageEvent} from '@angular/material/paginator';
 import {HttpClient} from '@angular/common/http';
-import {FormControl, Validators} from '@angular/forms';
 import {MusicPlaybackDurationChangeEvent, MusicPlayService} from '../../../../service/music-play.service';
 import {FileService} from '../../../../service/file.service';
 import {MusicListService, PlayMode} from '../../../../service/music-list.service';
@@ -16,17 +15,14 @@ import {PlayEvent} from '../control/control.component';
 })
 export class IndexComponent implements OnInit {
   private isSearch = false;
-  private searchKeyword: string;
   private playMode = PlayMode.LOOP;
 
+  searchKeyword: string;
   list: Music[];
   originalResponse: Page<Music> = new Page();
   nowPlayingMusicId: string;
   isPlay = false;
   musicTimeChangeEvent: MusicPlaybackDurationChangeEvent = new MusicPlaybackDurationChangeEvent(0, 0.1);
-  musicSearchFormControl = new FormControl('', [
-    Validators.required
-  ]);
 
   constructor(private http: HttpClient,
               private musicPlayService: MusicPlayService,
@@ -38,7 +34,6 @@ export class IndexComponent implements OnInit {
     this.musicListService.getMusicList().subscribe(music => this.refreshMusicList(music));
 
     this.musicPlayService.onPlayChangeEvent.subscribe((status) => {
-      console.log('play status changed:', status);
       this.isPlay = status;
     });
     this.musicPlayService.onTimeChangeEvent.subscribe((time) => {
@@ -83,7 +78,6 @@ export class IndexComponent implements OnInit {
   }
 
   onPageChange(pageEvent: PageEvent): void {
-    console.log(pageEvent);
     if (this.isSearch) {
       this.musicListService.search(this.searchKeyword, pageEvent.pageIndex, pageEvent.pageSize)
         .subscribe(music => this.refreshMusicList(music));
@@ -94,9 +88,6 @@ export class IndexComponent implements OnInit {
   }
 
   onSearch(): void {
-    console.log(this.musicSearchFormControl.value);
-
-    this.searchKeyword = this.musicSearchFormControl.value;
     if (this.searchKeyword) {
       this.isSearch = true;
       this.musicListService.search(this.searchKeyword).subscribe(music => this.refreshMusicList(music));
@@ -127,7 +118,6 @@ export class IndexComponent implements OnInit {
         }
         break;
       case PlayEvent.NEXT:
-        console.log('下一曲');
         const nextMusic = this.musicListService.getNextMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse);
         this.musicPlayService.start(this.fileService.getMusicFileUrl(nextMusic.musicId))
           .subscribe((status) => {
@@ -139,7 +129,6 @@ export class IndexComponent implements OnInit {
           });
         break;
       case PlayEvent.PREVIOUS:
-        console.log('上一曲');
         const previousMusic = this.musicListService.getPreviousMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse);
         this.musicPlayService.start(this.fileService.getMusicFileUrl(previousMusic.musicId))
           .subscribe((status) => {
@@ -155,7 +144,6 @@ export class IndexComponent implements OnInit {
   }
 
   onPlayModeChange(mode: PlayMode): void {
-    console.log(mode);
     this.playMode = mode;
   }
 }

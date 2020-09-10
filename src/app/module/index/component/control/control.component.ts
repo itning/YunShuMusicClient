@@ -32,7 +32,6 @@ export class ControlComponent implements OnInit {
   }
 
   onTimeChange(change: MatSliderChange): void {
-    console.log(change);
     this.timeChange.emit(change.value);
   }
 
