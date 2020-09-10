@@ -53,9 +53,9 @@ export class ControlComponent implements OnInit {
         this.nowPlayMode = PlayMode.REPEAT;
         break;
       case PlayMode.REPEAT:
-        this.nowPlayMode = PlayMode.SHUFFLE;
+        this.nowPlayMode = PlayMode.RANDOM;
         break;
-      case PlayMode.SHUFFLE:
+      case PlayMode.RANDOM:
         this.nowPlayMode = PlayMode.LOOP;
         break;
     }

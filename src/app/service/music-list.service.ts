@@ -38,6 +38,24 @@ export class MusicListService {
     return of(originalResponse.content[index]);
   }
 
+  private listLoopToGetThePreviousSong(nowPlayingMusicId: string, originalResponse: Page<Music>): Observable<Music> {
+    let index = 0;
+    if (nowPlayingMusicId !== undefined) {
+      for (let i = 0; i < originalResponse.content.length; i++) {
+        if (originalResponse.content[i].musicId === nowPlayingMusicId) {
+          if (i - 1 === -1) {
+            return this.getMusicList(originalResponse.totalPages - 1, originalResponse.size).pipe(map(m => m.content[0]));
+          } else {
+            index = i - 1;
+          }
+        }
+      }
+    } else {
+      return this.getMusicList(originalResponse.totalPages - 1, originalResponse.size).pipe(map(m => m.content[0]));
+    }
+    return of(originalResponse.content[index]);
+  }
+
   getMusicList(page = 0, size = 20): Observable<Page<Music>> {
     return this.http.get<Page<Music>>(`${this.host}music?page=${page}&size=${size}`);
   }
@@ -49,12 +67,22 @@ export class MusicListService {
   getNextMusic(mode: PlayMode, nowPlayingMusicId: string, originalResponse: Page<Music>): Observable<Music> {
     switch (mode) {
       case PlayMode.LOOP:
-        return this.listLoopToGetTheNextSong(nowPlayingMusicId, originalResponse);
       case PlayMode.REPEAT:
-        return of(originalResponse.content.find(m => m.musicId === nowPlayingMusicId));
-      case PlayMode.SHUFFLE:
+        return this.listLoopToGetTheNextSong(nowPlayingMusicId, originalResponse);
+      case PlayMode.RANDOM:
         // TODO 随机歌曲算法
         return this.listLoopToGetTheNextSong(nowPlayingMusicId, originalResponse);
+    }
+  }
+
+  getPreviousMusic(mode: PlayMode, nowPlayingMusicId: string, originalResponse: Page<Music>): Observable<Music> {
+    switch (mode) {
+      case PlayMode.LOOP:
+      case PlayMode.REPEAT:
+        return this.listLoopToGetThePreviousSong(nowPlayingMusicId, originalResponse);
+      case PlayMode.RANDOM:
+        // TODO 随机歌曲算法
+        return this.listLoopToGetThePreviousSong(nowPlayingMusicId, originalResponse);
     }
   }
 }
@@ -67,5 +95,5 @@ export class MusicListService {
 export enum PlayMode {
   LOOP = 'loop',
   REPEAT = 'repeat',
-  SHUFFLE = 'shuffle'
+  RANDOM = 'shuffle'
 }

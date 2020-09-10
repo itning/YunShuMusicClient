@@ -44,7 +44,18 @@ export class IndexComponent implements OnInit {
     this.musicPlayService.onTimeChangeEvent.subscribe((time) => {
       this.musicTimeChangeEvent = time;
     });
-    this.musicPlayService.onEndChangeEvent.subscribe(() => this.onPlayStatusChange(PlayEvent.NEXT));
+    this.musicPlayService.onEndChangeEvent.subscribe(() => {
+      if (this.playMode === PlayMode.REPEAT) {
+        this.musicPlayService.start(this.fileService.getMusicFileUrl(this.nowPlayingMusicId)).subscribe((status) => {
+            if (!status) {
+              alert('播放失败');
+            }
+          }
+        );
+      } else {
+        this.onPlayStatusChange(PlayEvent.NEXT);
+      }
+    });
   }
 
   private refreshMusicList(originalResponse: Page<Music>): void {
@@ -102,8 +113,12 @@ export class IndexComponent implements OnInit {
   onPlayStatusChange(event: PlayEvent): void {
     switch (event) {
       case PlayEvent.PLAY:
-        if (!this.musicPlayService.isPlayingNow() && this.nowPlayingMusicId) {
-          this.musicPlayService.play().subscribe();
+        if (!this.musicPlayService.isPlayingNow()) {
+          if (this.nowPlayingMusicId) {
+            this.musicPlayService.play().subscribe();
+          } else {
+            this.onPlayStatusChange(PlayEvent.NEXT);
+          }
         }
         break;
       case PlayEvent.PAUSE:
@@ -126,6 +141,16 @@ export class IndexComponent implements OnInit {
         break;
       case PlayEvent.PREVIOUS:
         console.log('上一曲');
+        this.musicListService.getPreviousMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse).subscribe(nextMusic => {
+          this.musicPlayService.start(this.fileService.getMusicFileUrl(nextMusic.musicId))
+            .subscribe((status) => {
+              if (status) {
+                this.nowPlayingMusicId = nextMusic.musicId;
+              } else {
+                alert('播放失败');
+              }
+            });
+        });
         break;
       default:
     }
