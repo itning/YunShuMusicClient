@@ -81,6 +81,16 @@ export class MusicPlayService {
     });
   }
 
+  volume(value: number): void {
+    if (value < 0) {
+      value = 0;
+    }
+    if (value > 100) {
+      value = 100;
+    }
+    this.audio.volume = value;
+  }
+
   play(): Observable<boolean> {
     return new Observable((observer) => {
       if (!this.isPlayingNow()) {
