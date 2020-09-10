@@ -14,6 +14,8 @@ export class ControlComponent implements OnInit {
   nowTime: number;
   @Input()
   totalTime: number;
+  @Input()
+  info: string;
   @Output()
   timeChange: EventEmitter<number> = new EventEmitter<number>();
   @Output()

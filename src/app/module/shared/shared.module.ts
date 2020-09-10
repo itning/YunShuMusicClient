@@ -8,9 +8,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSliderModule} from '@angular/material/slider';
-import {MatGridListModule} from '@angular/material/grid-list';
 import {SecondsToMinutesPipe} from '../../pipe/seconds-to-minutes.pipe';
 
 @NgModule({
@@ -28,9 +26,7 @@ import {SecondsToMinutesPipe} from '../../pipe/seconds-to-minutes.pipe';
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatProgressBarModule,
     MatSliderModule,
-    MatGridListModule
   ],
   exports: [
     FormsModule,
@@ -43,9 +39,7 @@ import {SecondsToMinutesPipe} from '../../pipe/seconds-to-minutes.pipe';
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatProgressBarModule,
     MatSliderModule,
-    MatGridListModule,
     SecondsToMinutesPipe
   ]
 })

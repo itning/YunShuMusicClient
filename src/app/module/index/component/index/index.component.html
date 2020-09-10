@@ -45,6 +45,7 @@
     <app-control [nowPlaying]="isPlay"
                  [nowTime]="musicTimeChangeEvent.nowTime"
                  [totalTime]="musicTimeChangeEvent.totalTime"
+                 [info]="nowPlayMusicInfo"
                  (timeChange)="onTimeChange($event)"
                  (playStatusChange)="onPlayStatusChange($event)"
                  (playModeChange)="onPlayModeChange($event)"></app-control>

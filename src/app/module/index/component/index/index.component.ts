@@ -21,6 +21,7 @@ export class IndexComponent implements OnInit {
   list: Music[];
   originalResponse: Page<Music> = new Page();
   nowPlayingMusicId: string;
+  nowPlayMusicInfo: string;
   isPlay = false;
   musicTimeChangeEvent: MusicPlaybackDurationChangeEvent = new MusicPlaybackDurationChangeEvent(0, 0.1);
 
@@ -40,6 +41,7 @@ export class IndexComponent implements OnInit {
       this.musicTimeChangeEvent = time;
     });
     this.musicPlayService.onPlayEndEvent.subscribe(() => {
+      // 单曲循环
       if (this.playMode === PlayMode.REPEAT) {
         this.musicPlayService.start(this.fileService.getMusicFileUrl(this.nowPlayingMusicId)).subscribe((status) => {
             if (!status) {
@@ -58,12 +60,20 @@ export class IndexComponent implements OnInit {
     this.originalResponse = originalResponse;
   }
 
+  private refreshMusicInfo(nowPlayingMusicId: string): void {
+    this.nowPlayingMusicId = nowPlayingMusicId;
+    const nowPlayMusic = this.list.find(item => item.musicId === nowPlayingMusicId);
+    if (nowPlayMusic) {
+      this.nowPlayMusicInfo = `${nowPlayMusic.name}-${nowPlayMusic.singer}`;
+    }
+  }
+
   doOnClick(musicId: string): void {
     if (this.nowPlayingMusicId !== musicId) {
       this.musicPlayService.start(this.fileService.getMusicFileUrl(musicId))
         .subscribe((status) => {
           if (status) {
-            this.nowPlayingMusicId = musicId;
+            this.refreshMusicInfo(musicId);
           } else {
             alert('播放失败');
           }
@@ -122,7 +132,7 @@ export class IndexComponent implements OnInit {
         this.musicPlayService.start(this.fileService.getMusicFileUrl(nextMusic.musicId))
           .subscribe((status) => {
             if (status) {
-              this.nowPlayingMusicId = nextMusic.musicId;
+              this.refreshMusicInfo(nextMusic.musicId);
             } else {
               alert('播放失败');
             }
@@ -133,7 +143,7 @@ export class IndexComponent implements OnInit {
         this.musicPlayService.start(this.fileService.getMusicFileUrl(previousMusic.musicId))
           .subscribe((status) => {
             if (status) {
-              this.nowPlayingMusicId = previousMusic.musicId;
+              this.refreshMusicInfo(previousMusic.musicId);
             } else {
               alert('播放失败');
             }

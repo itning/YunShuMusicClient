@@ -1,23 +1,24 @@
-<div style="height: 60px">
-  <mat-grid-list cols="5" rowHeight="60px">
-    <mat-grid-tile colspan='2' rowspan="1">
-      <button mat-icon-button color="primary" (click)="onPlayChange(3)">
-        <mat-icon>skip_previous</mat-icon>
-      </button>
-      <button mat-icon-button color="primary" (click)="onPlayChange()">
-        <mat-icon>{{nowPlaying ? 'pause' : 'play_arrow'}}</mat-icon>
-      </button>
-      <button mat-icon-button color="primary" (click)="onPlayChange(2)">
-        <mat-icon>skip_next</mat-icon>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile colspan='3' rowspan="1">
-      {{nowTime | secondsToMinutes}}/{{totalTime | secondsToMinutes}}
-      <mat-slider [step]="sliderStep" [min]="0" [max]="totalTime" [value]="nowTime"
-                  (input)="onTimeChange($event)"></mat-slider>
+<div class="control-box">
+  <div>
+    <button mat-icon-button color="primary" (click)="onPlayChange(3)">
+      <mat-icon>skip_previous</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" (click)="onPlayChange()">
+      <mat-icon>{{nowPlaying ? 'pause' : 'play_arrow'}}</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" (click)="onPlayChange(2)">
+      <mat-icon>skip_next</mat-icon>
+    </button>
+  </div>
+  <div class="control-info">
+    <div class="control-time">
+      <span>{{nowTime | secondsToMinutes}}/{{totalTime | secondsToMinutes}}</span>
       <button mat-icon-button color="primary" (click)="changePlayMode()">
         <mat-icon>{{nowPlayMode}}</mat-icon>
       </button>
-    </mat-grid-tile>
-  </mat-grid-list>
+      <span class="control-info">{{info}}</span>
+    </div>
+    <mat-slider [step]="sliderStep" [min]="0" [max]="totalTime" [value]="nowTime"
+                (input)="onTimeChange($event)" class="control-slider"></mat-slider>
+  </div>
 </div>
