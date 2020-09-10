@@ -20,4 +20,19 @@ export class MusicListService {
   search(keywords: string, page = 0, size = 20): Observable<Page<Music>> {
     return this.http.get<Page<Music>>(`${this.host}music/search?keyword=${keywords}&page=${page}&size=${size}`);
   }
+
+  getNextMusic(mode: PlayMode): Music {
+    return undefined;
+  }
+}
+
+/**
+ *  列表循环 loop
+ *  单曲循环 repeat
+ *  随机 shuffle
+ */
+export enum PlayMode {
+  LOOP = 'loop',
+  REPEAT = 'repeat',
+  SHUFFLE = 'shuffle'
 }

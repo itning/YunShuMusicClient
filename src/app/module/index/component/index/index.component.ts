@@ -4,10 +4,11 @@ import {Music} from '../../../../entity/Music';
 import {PageEvent} from '@angular/material/paginator';
 import {HttpClient} from '@angular/common/http';
 import {FormControl, Validators} from '@angular/forms';
-import {MusicPlayService} from '../../../../service/music-play.service';
+import {MusicPlaybackDurationChangeEvent, MusicPlayService} from '../../../../service/music-play.service';
 import {FileService} from '../../../../service/file.service';
 import {mergeMap} from 'rxjs/operators';
-import {MusicListService} from '../../../../service/music-list.service';
+import {MusicListService, PlayMode} from '../../../../service/music-list.service';
+import {PlayEvent} from '../control/control.component';
 
 @Component({
   selector: 'app-index',
@@ -15,12 +16,14 @@ import {MusicListService} from '../../../../service/music-list.service';
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
+  private isSearch = false;
+  private searchKeyword: string;
+
   list: Music[];
   originalResponse: Page<Music> = new Page();
   nowPlayingMusicId: string;
   isPlay = false;
-  isSearch = false;
-  searchKeyword: string;
+  musicTimeChangeEvent: MusicPlaybackDurationChangeEvent = new MusicPlaybackDurationChangeEvent(0, 0.1);
   musicSearchFormControl = new FormControl('', [
     Validators.required
   ]);
@@ -38,8 +41,8 @@ export class IndexComponent implements OnInit {
       console.log('play status changed:', status);
       this.isPlay = status;
     });
-    this.musicPlayService.onTimeChangeEvent.subscribe(time => {
-      console.log(time);
+    this.musicPlayService.onTimeChangeEvent.subscribe((time) => {
+      this.musicTimeChangeEvent = time;
     });
   }
 
@@ -50,10 +53,7 @@ export class IndexComponent implements OnInit {
 
   doOnClick(musicId: string): void {
     if (this.nowPlayingMusicId !== musicId) {
-      this.fileService.getMusicFileToObjectUrl(musicId)
-        .pipe(
-          mergeMap((url: string) => this.musicPlayService.start(url))
-        )
+      this.musicPlayService.start(this.fileService.getMusicFileUrl(musicId))
         .subscribe((status) => {
           if (status) {
             this.nowPlayingMusicId = musicId;
@@ -92,5 +92,35 @@ export class IndexComponent implements OnInit {
       this.isSearch = false;
       this.musicListService.getMusicList().subscribe(music => this.refreshMusicList(music));
     }
+  }
+
+  onTimeChange(time: number): void {
+    this.musicPlayService.seek(time).subscribe();
+  }
+
+  onPlayStatusChange(event: PlayEvent): void {
+    switch (event) {
+      case PlayEvent.PLAY:
+        if (!this.musicPlayService.isPlayingNow() && this.nowPlayingMusicId) {
+          this.musicPlayService.play().subscribe();
+        }
+        break;
+      case PlayEvent.PAUSE:
+        if (this.musicPlayService.isPlayingNow()) {
+          this.musicPlayService.pause().subscribe();
+        }
+        break;
+      case PlayEvent.NEXT:
+        console.log('下一曲');
+        break;
+      case PlayEvent.PREVIOUS:
+        console.log('上一曲');
+        break;
+      default:
+    }
+  }
+
+  onPlayModeChange(mode: PlayMode): void {
+    console.log(mode);
   }
 }

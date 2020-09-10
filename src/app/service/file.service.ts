@@ -19,4 +19,8 @@ export class FileService {
   getMusicFileToObjectUrl(musicId: string): Observable<string> {
     return this.getMusicFile(musicId).pipe(map(blob => window.URL.createObjectURL(blob)));
   }
+
+  getMusicFileUrl(musicId: string): string {
+    return `${this.host}file?id=${musicId}`;
+  }
 }

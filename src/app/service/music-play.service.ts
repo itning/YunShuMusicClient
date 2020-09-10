@@ -46,11 +46,29 @@ export class MusicPlayService {
     // tslint:disable-next-line
   };
 
-  start(objectUrl: string): Observable<boolean> {
-    this.audio.src = objectUrl;
+  start(src: string): Observable<boolean> {
+    this.audio.src = src;
     this.audio.load();
     this.audio.pause();
     return this.play();
+  }
+
+  seek(position: number): Observable<boolean> {
+    return new Observable((observer) => {
+      if (this.isPlayingNow()) {
+        if (position < 0) {
+          position = 0;
+        }
+        if (position > this.audio.duration) {
+          position = this.audio.duration;
+        }
+        this.audio.currentTime = position;
+        observer.next(true);
+      } else {
+        observer.next(false);
+      }
+      observer.complete();
+    });
   }
 
   play(): Observable<boolean> {

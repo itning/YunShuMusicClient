@@ -26,6 +26,7 @@
   left: 0;
   right: 0;
 }
+
 .search-form {
   min-width: 150px;
   width: 100%;
@@ -33,4 +34,24 @@
 
 .search-full-width {
   width: 100%;
+}
+
+.music-list-item {
+  display: flex;
+}
+
+.music-list-item-index {
+  width: 20px;
+  line-height: 40px;
+  margin-right: 12px;
+}
+
+.music-list-item-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-list-item-singer {
+  font-size: 12px;
 }

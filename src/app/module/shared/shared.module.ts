@@ -8,9 +8,15 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {SecondsToMinutesPipe} from '../../pipe/seconds-to-minutes.pipe';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    SecondsToMinutesPipe
+  ],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -21,7 +27,10 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatInputModule,
     MatIconModule,
     MatToolbarModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatProgressBarModule,
+    MatSliderModule,
+    MatGridListModule
   ],
   exports: [
     FormsModule,
@@ -33,7 +42,11 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatInputModule,
     MatIconModule,
     MatToolbarModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatProgressBarModule,
+    MatSliderModule,
+    MatGridListModule,
+    SecondsToMinutesPipe
   ]
 })
 export class SharedModule {

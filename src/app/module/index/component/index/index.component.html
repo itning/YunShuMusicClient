@@ -1,5 +1,5 @@
 <ng-container>
-  <mat-toolbar color="primary" class="index-header">
+  <mat-toolbar color="primary" class="index-header" style="height: 60px">
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
@@ -18,13 +18,20 @@
       Sidenav
     </mat-sidenav>
     <mat-sidenav-content>
-      <mat-list>
-        <mat-list-item *ngFor="let item of list">
-          <button (click)="doOnClick(item.musicId)" mat-button
-                  color="primary">{{(nowPlayingMusicId === item.musicId && isPlay) ? "暂停" : "播放"}}</button>
-          {{item.name}}-{{item.singer}}
-        </mat-list-item>
-      </mat-list>
+      <mat-selection-list [multiple]="false"
+                          (selectionChange)="doOnClick($event.option.value)">
+        <mat-list-option *ngFor="let item of list;let i=index" [value]="item.musicId">
+          <div class="music-list-item">
+            <div class="music-list-item-index">{{i + 1}}</div>
+            <div>
+              <div class="music-list-item-name">{{item.name}}</div>
+              <div class="music-list-item-singer">{{item.singer}}</div>
+            </div>
+          </div>
+          <div>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
       <mat-paginator [length]="originalResponse.totalElements"
                      [pageSize]="originalResponse.size"
                      [pageIndex]="originalResponse.number"
@@ -33,7 +40,12 @@
       </mat-paginator>
     </mat-sidenav-content>
   </mat-sidenav-container>
-  <mat-toolbar class="index-footer">
-    <p>Footer</p>
-  </mat-toolbar>
+  <div class="index-footer">
+    <app-control [nowPlaying]="isPlay"
+                 [nowTime]="musicTimeChangeEvent.nowTime"
+                 [totalTime]="musicTimeChangeEvent.totalTime"
+                 (timeChange)="onTimeChange($event)"
+                 (playStatusChange)="onPlayStatusChange($event)"
+                 (playModeChange)="onPlayModeChange($event)"></app-control>
+  </div>
 </ng-container>
