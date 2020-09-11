@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {PwaService} from './service/pwa.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,7 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
 
+  constructor(private pwaService: PwaService) {
+    pwaService.start();
+  }
 }
