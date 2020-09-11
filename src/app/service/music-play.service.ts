@@ -57,7 +57,7 @@ export class MusicPlayService {
 
   private musicChangeEventHandlers = () => {
     if (this.audio.currentTime && this.audio.duration) {
-      this.timeObserver.next(new MusicPlaybackDurationChangeEvent(this.audio.currentTime, this.audio.duration));
+      this.timeObserver.next(new MusicPlaybackDurationChangeEvent(this.audio.currentTime, this.audio.duration, this.audio.buffered));
     }
     // tslint:disable-next-line
   };
@@ -147,9 +147,11 @@ export class MusicPlayService {
 export class MusicPlaybackDurationChangeEvent {
   readonly nowTime: number;
   readonly totalTime: number;
+  readonly timeRanges: TimeRanges;
 
-  constructor(nowTime: number, totalTime: number) {
+  constructor(nowTime: number, totalTime: number, timeRanges: TimeRanges) {
     this.nowTime = nowTime;
     this.totalTime = totalTime;
+    this.timeRanges = timeRanges;
   }
 }
