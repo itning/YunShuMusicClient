@@ -7,6 +7,7 @@ import {MusicPlaybackDurationChangeEvent, MusicPlayService} from '../../../../se
 import {FileService} from '../../../../service/file.service';
 import {MusicListService, PlayMode} from '../../../../service/music-list.service';
 import {PlayEvent} from '../control/control.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-index',
@@ -26,6 +27,7 @@ export class IndexComponent implements OnInit {
   musicTimeChangeEvent: MusicPlaybackDurationChangeEvent = new MusicPlaybackDurationChangeEvent(0, 0.1);
 
   constructor(private http: HttpClient,
+              private snackBar: MatSnackBar,
               private musicPlayService: MusicPlayService,
               private musicListService: MusicListService,
               private fileService: FileService) {
@@ -45,7 +47,7 @@ export class IndexComponent implements OnInit {
       if (this.playMode === PlayMode.REPEAT) {
         this.musicPlayService.start(this.fileService.getMusicFileUrl(this.nowPlayingMusicId)).subscribe((status) => {
             if (!status) {
-              alert('播放失败');
+              this.snackBar.open('播放失败', '我知道了');
             }
           }
         );
@@ -75,7 +77,7 @@ export class IndexComponent implements OnInit {
           if (status) {
             this.refreshMusicInfo(musicId);
           } else {
-            alert('播放失败');
+            this.snackBar.open('播放失败', '我知道了');
           }
         });
     } else {
@@ -134,7 +136,7 @@ export class IndexComponent implements OnInit {
             if (status) {
               this.refreshMusicInfo(nextMusic.musicId);
             } else {
-              alert('播放失败');
+              this.snackBar.open('播放失败', '我知道了');
             }
           });
         break;
@@ -145,7 +147,7 @@ export class IndexComponent implements OnInit {
             if (status) {
               this.refreshMusicInfo(previousMusic.musicId);
             } else {
-              alert('播放失败');
+              this.snackBar.open('播放失败', '我知道了');
             }
           });
         break;

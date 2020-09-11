@@ -10,6 +10,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSliderModule} from '@angular/material/slider';
 import {SecondsToMinutesPipe} from '../../pipe/seconds-to-minutes.pipe';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import {SecondsToMinutesPipe} from '../../pipe/seconds-to-minutes.pipe';
     MatToolbarModule,
     MatSidenavModule,
     MatSliderModule,
+    MatTooltipModule,
+    MatSnackBarModule
   ],
   exports: [
     FormsModule,
@@ -40,7 +44,9 @@ import {SecondsToMinutesPipe} from '../../pipe/seconds-to-minutes.pipe';
     MatToolbarModule,
     MatSidenavModule,
     MatSliderModule,
-    SecondsToMinutesPipe
+    SecondsToMinutesPipe,
+    MatTooltipModule,
+    MatSnackBarModule
   ]
 })
 export class SharedModule {

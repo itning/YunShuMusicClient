@@ -27,6 +27,8 @@ export class ControlComponent implements OnInit {
 
   nowPlayMode = PlayMode.LOOP;
 
+  nowPlayModeDesc = '列表循环';
+
   constructor() {
   }
 
@@ -52,12 +54,15 @@ export class ControlComponent implements OnInit {
     switch (this.nowPlayMode) {
       case PlayMode.LOOP:
         this.nowPlayMode = PlayMode.REPEAT;
+        this.nowPlayModeDesc = '单曲循环';
         break;
       case PlayMode.REPEAT:
         this.nowPlayMode = PlayMode.RANDOM;
+        this.nowPlayModeDesc = '随机';
         break;
       case PlayMode.RANDOM:
         this.nowPlayMode = PlayMode.LOOP;
+        this.nowPlayModeDesc = '列表循环';
         break;
     }
     this.playModeChange.emit(this.nowPlayMode);

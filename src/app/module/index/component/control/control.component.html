@@ -1,5 +1,5 @@
 <div class="control-box">
-  <div>
+  <div class="control-left">
     <button mat-icon-button color="primary" (click)="onPlayChange(3)">
       <mat-icon>skip_previous</mat-icon>
     </button>
@@ -10,15 +10,16 @@
       <mat-icon>skip_next</mat-icon>
     </button>
   </div>
-  <div class="control-info">
-    <div class="control-time">
-      <span>{{nowTime | secondsToMinutes}}/{{totalTime | secondsToMinutes}}</span>
-      <button mat-icon-button color="primary" (click)="changePlayMode()">
-        <mat-icon>{{nowPlayMode}}</mat-icon>
-      </button>
-      <span class="control-info">{{info}}</span>
-    </div>
+  <div class="control-time">
+    <span style="padding-left: 7px">{{nowTime | secondsToMinutes}}/{{totalTime | secondsToMinutes}}</span>
+    <button [matTooltip]="nowPlayModeDesc"
+            matTooltipPosition="above"
+            mat-icon-button color="primary" (click)="changePlayMode()">
+      <mat-icon>{{nowPlayMode}}</mat-icon>
+    </button></div>
+  <div class="control-music-info">{{info}}</div>
+  <div class="control-slider">
     <mat-slider [step]="sliderStep" [min]="0" [max]="totalTime" [value]="nowTime"
-                (input)="onTimeChange($event)" class="control-slider"></mat-slider>
+                (input)="onTimeChange($event)"></mat-slider>
   </div>
 </div>
