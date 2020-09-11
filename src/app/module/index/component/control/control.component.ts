@@ -1,11 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatSliderChange} from '@angular/material/slider';
 import {PlayMode} from '../../../../service/music-list.service';
 
 @Component({
   selector: 'app-control',
   templateUrl: './control.component.html',
-  styleUrls: ['./control.component.scss']
+  styleUrls: ['./control.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ControlComponent implements OnInit {
   @Input()
