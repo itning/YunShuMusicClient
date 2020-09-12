@@ -39,7 +39,7 @@ export class ConfigService {
     } else if (defaultVolume < 0) {
       volume = 0;
     } else {
-      volume = defaultVolume ? defaultVolume : 1;
+      volume = defaultVolume;
     }
     window.localStorage.setItem(this.VOLUME, volume.toString());
   }
