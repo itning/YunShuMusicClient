@@ -13,8 +13,13 @@ export class ConfigService {
 
   getDefaultVolume(): number {
     const defaultVolumeString: string | null = window.localStorage.getItem(this.VOLUME);
+    if (!defaultVolumeString) {
+      this.setDefaultVolume(1);
+      return 1;
+    }
     const defaultVolume = Number(defaultVolumeString);
     if (isNaN(defaultVolume)) {
+      this.setDefaultVolume(1);
       return 1;
     } else {
       if (defaultVolume > 1) {
