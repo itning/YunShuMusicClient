@@ -66,7 +66,6 @@ export class SidenavComponent implements OnInit {
   }
 
   onVolumeChange(change: MatSliderChange): void {
-    console.log(change.value);
     this.volumeChange.emit(change.value);
   }
 }
