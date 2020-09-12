@@ -147,7 +147,7 @@ export class IndexComponent implements OnInit {
   onSearch(): void {
     if (this.searchKeyword) {
       this.isSearch = true;
-      this.musicListService.search(this.searchKeyword).subscribe(music => this.refreshMusicList(music));
+      this.musicListService.search(this.searchKeyword.trim()).subscribe(music => this.refreshMusicList(music));
     } else {
       this.isSearch = false;
       this.musicListService.getMusicList().subscribe(music => this.refreshMusicList(music));
