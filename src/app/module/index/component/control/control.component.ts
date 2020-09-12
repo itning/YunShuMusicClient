@@ -17,6 +17,8 @@ export class ControlComponent implements OnInit {
   totalTime: number;
   @Input()
   info: string;
+  @Input()
+  nowPlayMode = PlayMode.LOOP;
   @Output()
   timeChange: EventEmitter<number> = new EventEmitter<number>();
   @Output()
@@ -25,10 +27,6 @@ export class ControlComponent implements OnInit {
   playModeChange: EventEmitter<PlayMode> = new EventEmitter<PlayMode>();
 
   sliderStep = 1;
-
-  nowPlayMode = PlayMode.LOOP;
-
-  nowPlayModeDesc = '列表循环';
 
   constructor() {
   }
@@ -55,19 +53,28 @@ export class ControlComponent implements OnInit {
     switch (this.nowPlayMode) {
       case PlayMode.LOOP:
         this.nowPlayMode = PlayMode.REPEAT;
-        this.nowPlayModeDesc = '单曲循环';
         break;
       case PlayMode.REPEAT:
         this.nowPlayMode = PlayMode.RANDOM;
-        this.nowPlayModeDesc = '随机';
         break;
       case PlayMode.RANDOM:
         this.nowPlayMode = PlayMode.LOOP;
-        this.nowPlayModeDesc = '列表循环';
         break;
     }
     this.playModeChange.emit(this.nowPlayMode);
   }
+
+  getNowPlayModeDesc(): string {
+    switch (this.nowPlayMode) {
+      case PlayMode.LOOP:
+        return '列表循环';
+      case PlayMode.REPEAT:
+        return '单曲循环';
+      case PlayMode.RANDOM:
+        return '随机';
+    }
+  }
+
 }
 
 export enum PlayEvent {

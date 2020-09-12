@@ -18,8 +18,8 @@ import {ConfigService} from '../../../../service/config.service';
 })
 export class IndexComponent implements OnInit {
   private isSearch = false;
-  private playMode = PlayMode.LOOP;
 
+  playMode = PlayMode.LOOP;
   searchKeyword: string;
   list: Music[];
   originalResponse: Page<Music> = new Page();
@@ -42,6 +42,7 @@ export class IndexComponent implements OnInit {
     const defaultVolume = this.configService.getDefaultVolume();
     this.volumeValue = defaultVolume;
     this.musicPlayService.volume(defaultVolume);
+    this.playMode = this.configService.getDefaultMusicPlayMode();
 
     this.musicListService.getMusicList().subscribe(music => this.refreshMusicList(music));
 
@@ -167,6 +168,7 @@ export class IndexComponent implements OnInit {
 
   onPlayModeChange(mode: PlayMode): void {
     this.playMode = mode;
+    this.configService.setDefaultMusicPlayMode(mode);
   }
 
   onVolumeChange(volume: number): void {

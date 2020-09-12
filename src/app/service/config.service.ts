@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
+import {PlayMode} from './music-list.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
   private readonly VOLUME = 'volume';
+  private readonly PLAY_MODE = 'play_mode';
 
   constructor() {
   }
@@ -35,5 +37,22 @@ export class ConfigService {
       volume = defaultVolume ? defaultVolume : 1;
     }
     window.localStorage.setItem(this.VOLUME, volume.toString());
+  }
+
+  setDefaultMusicPlayMode(mode: PlayMode): void {
+    window.localStorage.setItem(this.PLAY_MODE, mode);
+  }
+
+  getDefaultMusicPlayMode(): PlayMode {
+    const mode = window.localStorage.getItem(this.PLAY_MODE);
+    switch (mode) {
+      case PlayMode.LOOP:
+      case PlayMode.REPEAT:
+      case PlayMode.RANDOM:
+        return mode;
+      default:
+        window.localStorage.removeItem(this.PLAY_MODE);
+        return PlayMode.LOOP;
+    }
   }
 }

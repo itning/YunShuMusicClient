@@ -12,7 +12,7 @@
   </div>
   <div class="control-time">
     <span style="padding-left: 7px">{{nowTime | secondsToMinutes}}/{{totalTime | secondsToMinutes}}</span>
-    <button [matTooltip]="nowPlayModeDesc"
+    <button [matTooltip]="getNowPlayModeDesc()"
             matTooltipPosition="above"
             mat-icon-button color="primary" (click)="changePlayMode()">
       <mat-icon>{{nowPlayMode}}</mat-icon>
