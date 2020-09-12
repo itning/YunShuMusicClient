@@ -1,6 +1,6 @@
 {
-  "name": "YunShuMusicClient",
-  "short_name": "YunShuMusicClient",
+  "name": "云舒音乐",
+  "short_name": "云舒音乐",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
