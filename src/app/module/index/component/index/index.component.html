@@ -20,6 +20,7 @@
                    (volumeChange)="onVolumeChange($event)"></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>
+      <mat-progress-bar [mode]="progressMode" *ngIf="progressMode" style="position: absolute"></mat-progress-bar>
       <mat-selection-list [multiple]="false"
                           (selectionChange)="doOnClick($event.option.value)">
         <mat-list-option *ngFor="let item of list;let i=index" [value]="item.musicId"

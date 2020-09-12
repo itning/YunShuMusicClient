@@ -22,6 +22,8 @@ export class MusicPlayService {
    * 播放结束事件发射器
    */
   private endObserver: Subscriber<void>;
+
+  private loadObserver: Subscriber<MusicLoadEvent>;
   /**
    * 播放状态改变事件
    */
@@ -35,6 +37,8 @@ export class MusicPlayService {
    */
   onPlayEndEvent: Observable<void>;
 
+  onLoadEvent: Observable<MusicLoadEvent>;
+
   constructor() {
     this.onPlayChangeEvent = new Observable<boolean>((observer) => {
       this.playObserver = observer;
@@ -45,6 +49,9 @@ export class MusicPlayService {
     this.onPlayEndEvent = new Observable<void>((observer) => {
       this.endObserver = observer;
     });
+    this.onLoadEvent = new Observable<MusicLoadEvent>((observer) => {
+      this.loadObserver = observer;
+    });
 
     this.audio.ondurationchange = this.musicChangeEventHandlers;
     this.audio.ontimeupdate = this.musicChangeEventHandlers;
@@ -53,6 +60,10 @@ export class MusicPlayService {
       this.playObserver.next(false);
       this.endObserver.next();
     };
+
+    this.audio.onprogress = () => this.loadObserver.next(MusicLoadEvent.LOADING);
+    this.audio.oncanplay = () => this.loadObserver.next(MusicLoadEvent.STARTED);
+    this.audio.oncanplaythrough = () => this.loadObserver.next(MusicLoadEvent.STARTED);
   }
 
   private musicChangeEventHandlers = () => {
@@ -63,6 +74,7 @@ export class MusicPlayService {
   };
 
   start(src: string): Observable<boolean> {
+    this.loadObserver.next(MusicLoadEvent.START);
     this.audio.src = src;
     this.audio.load();
     this.audio.pause();
@@ -154,4 +166,19 @@ export class MusicPlaybackDurationChangeEvent {
     this.totalTime = totalTime;
     this.timeRanges = timeRanges;
   }
+}
+
+export enum MusicLoadEvent {
+  /**
+   * 开始加载，发送网络请求，但是还没收到响应
+   */
+  START,
+  /**
+   * 接收数据中，还不可以播放
+   */
+  LOADING,
+  /**
+   * 可以播放了
+   */
+  STARTED
 }

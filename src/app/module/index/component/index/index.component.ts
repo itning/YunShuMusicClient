@@ -3,13 +3,15 @@ import {Page} from '../../../../entity/page/Page';
 import {Music} from '../../../../entity/Music';
 import {PageEvent} from '@angular/material/paginator';
 import {HttpClient} from '@angular/common/http';
-import {MusicPlaybackDurationChangeEvent, MusicPlayService} from '../../../../service/music-play.service';
+import {MusicLoadEvent, MusicPlaybackDurationChangeEvent, MusicPlayService} from '../../../../service/music-play.service';
 import {FileService} from '../../../../service/file.service';
 import {MusicListService, PlayMode} from '../../../../service/music-list.service';
 import {PlayEvent} from '../control/control.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Subject} from 'rxjs';
+import {Subject, timer} from 'rxjs';
 import {ConfigService} from '../../../../service/config.service';
+import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
+import {filter, mapTo, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-index',
@@ -29,6 +31,7 @@ export class IndexComponent implements OnInit {
   musicTimeChangeEvent: MusicPlaybackDurationChangeEvent = new MusicPlaybackDurationChangeEvent(0, 0.1, null);
   onTimeChangeEventSubject = new Subject<MusicPlaybackDurationChangeEvent>();
   volumeValue = 1;
+  progressMode: ProgressBarMode;
 
   constructor(private http: HttpClient,
               private snackBar: MatSnackBar,
@@ -39,13 +42,12 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const defaultVolume = this.configService.getDefaultVolume();
-    this.volumeValue = defaultVolume;
-    this.musicPlayService.volume(defaultVolume);
-    this.playMode = this.configService.getDefaultMusicPlayMode();
-
+    this.initDefaultConfig();
+    this.handlerMusicPlayServiceEvent();
     this.musicListService.getMusicList().subscribe(music => this.refreshMusicList(music));
+  }
 
+  private handlerMusicPlayServiceEvent(): void {
     this.musicPlayService.onPlayChangeEvent.subscribe((status) => {
       this.isPlay = status;
     });
@@ -66,6 +68,38 @@ export class IndexComponent implements OnInit {
         this.onPlayStatusChange(PlayEvent.NEXT);
       }
     });
+
+    const musicLoadEventSubject = new Subject<MusicLoadEvent>();
+    this.musicPlayService.onLoadEvent.subscribe(musicLoadEventSubject);
+
+    musicLoadEventSubject
+      .pipe(
+        filter(value => value === MusicLoadEvent.LOADING),
+        switchMap(() => timer(2000).pipe(mapTo(MusicLoadEvent.STARTED)))
+      )
+      .subscribe(() => {
+        this.progressMode = null;
+      });
+    musicLoadEventSubject.subscribe((event) => {
+      switch (event) {
+        case MusicLoadEvent.START:
+          this.progressMode = 'indeterminate';
+          break;
+        case MusicLoadEvent.LOADING:
+          this.progressMode = 'buffer';
+          break;
+        case MusicLoadEvent.STARTED:
+          this.progressMode = null;
+          break;
+      }
+    });
+  }
+
+  private initDefaultConfig(): void {
+    const defaultVolume = this.configService.getDefaultVolume();
+    this.volumeValue = defaultVolume;
+    this.musicPlayService.volume(defaultVolume);
+    this.playMode = this.configService.getDefaultMusicPlayMode();
   }
 
   private refreshMusicList(originalResponse: Page<Music>): void {
