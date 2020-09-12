@@ -1,1 +1,2 @@
 <canvas #musicCanvas width="200" height="50"></canvas>
+<mat-slider min="0" max="1" step="0.1" [value]="volumeValue" (input)="onVolumeChange($event)"></mat-slider>

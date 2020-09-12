@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs';
 import {MusicPlaybackDurationChangeEvent} from '../../../../service/music-play.service';
+import {MatSliderChange} from '@angular/material/slider';
 
 @Component({
   selector: 'app-sidenav',
@@ -13,6 +14,10 @@ export class SidenavComponent implements OnInit {
   musicCanvas: ElementRef<HTMLCanvasElement>;
   @Input()
   onTimeChangeEvent: Subject<MusicPlaybackDurationChangeEvent>;
+  @Input()
+  volumeValue = 100;
+  @Output()
+  volumeChange = new EventEmitter<number>();
 
   private canvasContext: CanvasRenderingContext2D;
 
@@ -58,5 +63,10 @@ export class SidenavComponent implements OnInit {
       const widthX = endX - startX;
       this.canvasContext.fillRect(startX, 0, widthX, height);
     }
+  }
+
+  onVolumeChange(change: MatSliderChange): void {
+    console.log(change.value);
+    this.volumeChange.emit(change.value);
   }
 }

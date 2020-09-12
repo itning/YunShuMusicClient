@@ -9,6 +9,7 @@ import {MusicListService, PlayMode} from '../../../../service/music-list.service
 import {PlayEvent} from '../control/control.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subject} from 'rxjs';
+import {ConfigService} from '../../../../service/config.service';
 
 @Component({
   selector: 'app-index',
@@ -27,15 +28,21 @@ export class IndexComponent implements OnInit {
   isPlay = false;
   musicTimeChangeEvent: MusicPlaybackDurationChangeEvent = new MusicPlaybackDurationChangeEvent(0, 0.1, null);
   onTimeChangeEventSubject = new Subject<MusicPlaybackDurationChangeEvent>();
+  volumeValue = 1;
 
   constructor(private http: HttpClient,
               private snackBar: MatSnackBar,
               private musicPlayService: MusicPlayService,
               private musicListService: MusicListService,
-              private fileService: FileService) {
+              private fileService: FileService,
+              private configService: ConfigService) {
   }
 
   ngOnInit(): void {
+    const defaultVolume = this.configService.getDefaultVolume();
+    this.volumeValue = defaultVolume;
+    this.musicPlayService.volume(defaultVolume);
+
     this.musicListService.getMusicList().subscribe(music => this.refreshMusicList(music));
 
     this.musicPlayService.onPlayChangeEvent.subscribe((status) => {
@@ -160,5 +167,10 @@ export class IndexComponent implements OnInit {
 
   onPlayModeChange(mode: PlayMode): void {
     this.playMode = mode;
+  }
+
+  onVolumeChange(volume: number): void {
+    this.musicPlayService.volume(volume);
+    this.configService.setDefaultVolume(volume);
   }
 }

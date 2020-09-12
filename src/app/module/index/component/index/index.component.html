@@ -15,7 +15,9 @@
   </mat-toolbar>
   <mat-sidenav-container class="index-container">
     <mat-sidenav #sidenav mode="over" class="index-sidenav" fixedInViewport="true">
-      <app-sidenav [onTimeChangeEvent]="onTimeChangeEventSubject"></app-sidenav>
+      <app-sidenav [onTimeChangeEvent]="onTimeChangeEventSubject"
+                   [volumeValue]="volumeValue"
+                   (volumeChange)="onVolumeChange($event)"></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>
       <mat-selection-list [multiple]="false"
