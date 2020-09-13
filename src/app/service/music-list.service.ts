@@ -9,6 +9,7 @@ import {environment} from '../../environments/environment';
   providedIn: 'root'
 })
 export class MusicListService {
+  private static randomPlayedList = new Set<string>();
 
   constructor(private http: HttpClient) {
   }
@@ -44,14 +45,26 @@ export class MusicListService {
   }
 
   private static getSongsRandomly(nowPlayingMusicId: string, originalResponse: Page<Music>): Music {
+    if (nowPlayingMusicId === undefined) {
+      return originalResponse.content[Math.floor(Math.random() * originalResponse.content.length)];
+    }
+    // 播放列表只有一个或零个
     if (originalResponse.content.length < 2) {
       return originalResponse.content.find(music => music.musicId === nowPlayingMusicId);
     }
+    // 播放列表只有两首歌
     if (originalResponse.content.length === 2) {
       return originalResponse.content.find(music => music.musicId !== nowPlayingMusicId);
     }
-    const index = Math.floor(Math.random() * originalResponse.content.length - 1);
-    return originalResponse.content.filter(music => music.musicId !== nowPlayingMusicId)[index];
+    MusicListService.randomPlayedList.add(nowPlayingMusicId);
+    let canPlayList = originalResponse.content.filter(music => !MusicListService.randomPlayedList.has(music.musicId));
+    if (canPlayList.length === 0) {
+      MusicListService.randomPlayedList.clear();
+      MusicListService.randomPlayedList.add(nowPlayingMusicId);
+      canPlayList = originalResponse.content.filter(music => !MusicListService.randomPlayedList.has(music.musicId));
+    }
+    const index = Math.floor(Math.random() * canPlayList.length);
+    return canPlayList[index];
   }
 
   getMusicList(page = 0, size = 1000): Observable<Page<Music>> {
