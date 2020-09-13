@@ -73,11 +73,11 @@ export class MusicListService {
     return canPlayList[index];
   }
 
-  getMusicList(page = 0, size = 1000): Observable<Page<Music>> {
+  getMusicList(page = 0, size = 2000): Observable<Page<Music>> {
     return this.http.get<Page<Music>>(`${environment.apiHost}music?page=${page}&size=${size}`);
   }
 
-  search(keywords: string, page = 0, size = 1000): Observable<Page<Music>> {
+  search(keywords: string, page = 0, size = 2000): Observable<Page<Music>> {
     return this.http.get<Page<Music>>(`${environment.apiHost}music/search?keyword=${keywords}&page=${page}&size=${size}`);
   }
 

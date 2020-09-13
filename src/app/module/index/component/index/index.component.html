@@ -39,7 +39,7 @@
       <mat-paginator [length]="originalResponse.totalElements"
                      [pageSize]="originalResponse.size"
                      [pageIndex]="originalResponse.number"
-                     [pageSizeOptions]="[20, 50, 100, 1000]"
+                     [pageSizeOptions]="[100, 500, 1000, 2000]"
                      (page)="onPageChange($event)">
       </mat-paginator>
       <button mat-mini-fab color="accent" class="fab-btn-location" (click)="onLocationClick()">
