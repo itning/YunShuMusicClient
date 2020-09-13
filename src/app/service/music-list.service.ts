@@ -17,12 +17,10 @@ export class MusicListService {
   private static listLoopToGetTheNextSong(nowPlayingMusicId: string, originalResponse: Page<Music>): Music {
     let index = 0;
     if (nowPlayingMusicId !== undefined) {
-      for (let i = 0; i < originalResponse.content.length; i++) {
-        if (originalResponse.content[i].musicId === nowPlayingMusicId) {
-          if (i + 1 < originalResponse.content.length) {
-            index = i + 1;
-          }
-          break;
+      const findIndex = originalResponse.content.findIndex(music => music.musicId === nowPlayingMusicId);
+      if (findIndex !== -1) {
+        if (findIndex + 1 < originalResponse.content.length) {
+          index = findIndex + 1;
         }
       }
     }
@@ -32,12 +30,10 @@ export class MusicListService {
   private static listLoopToGetThePreviousSong(nowPlayingMusicId: string, originalResponse: Page<Music>): Music {
     let index = originalResponse.content.length - 1;
     if (nowPlayingMusicId !== undefined) {
-      for (let i = 0; i < originalResponse.content.length; i++) {
-        if (originalResponse.content[i].musicId === nowPlayingMusicId) {
-          if (i - 1 >= 0) {
-            index = i - 1;
-          }
-          break;
+      const findIndex = originalResponse.content.findIndex(music => music.musicId === nowPlayingMusicId);
+      if (findIndex !== -1) {
+        if (findIndex - 1 >= 0) {
+          index = findIndex - 1;
         }
       }
     }
