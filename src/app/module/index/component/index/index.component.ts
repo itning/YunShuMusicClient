@@ -209,4 +209,14 @@ export class IndexComponent implements OnInit {
     this.musicPlayService.volume(volume);
     this.configService.setDefaultVolume(volume);
   }
+
+  onLocationClick(): void {
+    let index = this.list.findIndex(item => item.musicId === this.nowPlayingMusicId);
+    if (index !== -1) {
+      const clientHeight = document.getElementsByTagName('mat-list-option')[0].clientHeight;
+      index -= 10;
+      index = index < 0 ? 0 : index;
+      document.getElementsByTagName('mat-sidenav-content')[0].scrollTop = clientHeight * index;
+    }
+  }
 }

@@ -42,6 +42,9 @@
                      [pageSizeOptions]="[20, 50, 100, 1000]"
                      (page)="onPageChange($event)">
       </mat-paginator>
+      <button mat-mini-fab color="accent" (click)="onLocationClick()" style="bottom: 80px;position: fixed;right: 30px;">
+        <mat-icon>gps_fixed</mat-icon>
+      </button>
     </mat-sidenav-content>
   </mat-sidenav-container>
   <div class="index-footer">

@@ -103,6 +103,6 @@ export class MusicListService {
  */
 export enum PlayMode {
   LOOP = 'loop',
-  REPEAT = 'repeat',
+  REPEAT = 'repeat_one',
   RANDOM = 'shuffle'
 }

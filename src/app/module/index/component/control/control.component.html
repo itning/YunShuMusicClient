@@ -16,7 +16,8 @@
             matTooltipPosition="above"
             mat-icon-button color="primary" (click)="changePlayMode()">
       <mat-icon>{{nowPlayMode}}</mat-icon>
-    </button></div>
+    </button>
+  </div>
   <div class="control-music-info">{{info}}</div>
   <div class="control-slider">
     <mat-slider [step]="sliderStep" [min]="0" [max]="totalTime" [value]="nowTime"
