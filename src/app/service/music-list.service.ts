@@ -10,6 +10,7 @@ import {environment} from '../../environments/environment';
 })
 export class MusicListService {
   private static randomPlayedList = new Set<string>();
+  private static randomPlayedStack: string[] = [];
 
   constructor(private http: HttpClient) {
   }
@@ -40,6 +41,14 @@ export class MusicListService {
     return originalResponse.content[index];
   }
 
+  private static getPreviousSongRandomly(originalResponse: Page<Music>): Music {
+    const musicId = MusicListService.randomPlayedStack.pop();
+    if (musicId === undefined) {
+      return MusicListService.getSongsRandomly(undefined, originalResponse);
+    }
+    return originalResponse.content.find(music => music.musicId === musicId);
+  }
+
   private static getSongsRandomly(nowPlayingMusicId: string, originalResponse: Page<Music>): Music {
     if (nowPlayingMusicId === undefined) {
       return originalResponse.content[Math.floor(Math.random() * originalResponse.content.length)];
@@ -52,6 +61,7 @@ export class MusicListService {
     if (originalResponse.content.length === 2) {
       return originalResponse.content.find(music => music.musicId !== nowPlayingMusicId);
     }
+    MusicListService.randomPlayedStack.push(nowPlayingMusicId);
     MusicListService.randomPlayedList.add(nowPlayingMusicId);
     let canPlayList = originalResponse.content.filter(music => !MusicListService.randomPlayedList.has(music.musicId));
     if (canPlayList.length === 0) {
@@ -87,7 +97,7 @@ export class MusicListService {
       case PlayMode.REPEAT:
         return MusicListService.listLoopToGetThePreviousSong(nowPlayingMusicId, originalResponse);
       case PlayMode.RANDOM:
-        return MusicListService.getSongsRandomly(nowPlayingMusicId, originalResponse);
+        return MusicListService.getPreviousSongRandomly(originalResponse);
     }
   }
 }
