@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Page} from '../../../../entity/page/Page';
 import {Music} from '../../../../entity/Music';
 import {PageEvent} from '@angular/material/paginator';
@@ -118,6 +118,34 @@ export class IndexComponent implements OnInit {
     } else {
       this.nowPlayMusicInfo = '';
       this.titleService.setTitle('云舒音乐');
+    }
+  }
+
+  @HostListener('window:keydown.space', ['$event'])
+  onSpaceKeyDown(): void {
+    if (!this.musicPlayService.isPlayingNow()) {
+      if (this.nowPlayingMusicId) {
+        this.musicPlayService.play().subscribe();
+      } else {
+        this.onPlayStatusChange(PlayEvent.NEXT);
+      }
+    } else {
+      this.onPlayStatusChange(PlayEvent.PAUSE);
+    }
+  }
+
+  @HostListener('window:keydown.control.ArrowLeft', ['$event'])
+  @HostListener('window:keydown.control.ArrowRight', ['$event'])
+  onArrowLeftOrArrowRightKeyDown($event: KeyboardEvent): void {
+    if ($event.ctrlKey && $event.key !== undefined) {
+      if ($event.key === 'ArrowLeft') {
+        this.onPlayStatusChange(PlayEvent.PREVIOUS);
+        return;
+      }
+      if ($event.key === 'ArrowRight') {
+        this.onPlayStatusChange(PlayEvent.NEXT);
+        return;
+      }
     }
   }
 
