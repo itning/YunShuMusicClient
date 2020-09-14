@@ -12,6 +12,7 @@ import {Subject, timer} from 'rxjs';
 import {ConfigService} from '../../../../service/config.service';
 import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
 import {filter, mapTo, switchMap} from 'rxjs/operators';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-index',
@@ -38,7 +39,8 @@ export class IndexComponent implements OnInit {
               private musicPlayService: MusicPlayService,
               private musicListService: MusicListService,
               private fileService: FileService,
-              private configService: ConfigService) {
+              private configService: ConfigService,
+              private titleService: Title) {
   }
 
   ngOnInit(): void {
@@ -112,6 +114,10 @@ export class IndexComponent implements OnInit {
     const nowPlayMusic = this.list.find(item => item.musicId === nowPlayingMusicId);
     if (nowPlayMusic) {
       this.nowPlayMusicInfo = `${nowPlayMusic.name}-${nowPlayMusic.singer}`;
+      this.titleService.setTitle(`${this.nowPlayMusicInfo}-云舒音乐`);
+    } else {
+      this.nowPlayMusicInfo = '';
+      this.titleService.setTitle('云舒音乐');
     }
   }
 
