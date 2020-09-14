@@ -36,28 +36,13 @@
   width: 100%;
 }
 
-.music-list-item {
-  display: flex;
-}
-
 .music-list-item-index {
-  width: 20px;
+  text-align: center;
   line-height: 40px;
-  margin-right: 16px;
-}
-
-.music-list-item-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.music-list-item-singer {
-  font-size: 12px;
 }
 
 .fab-btn-location {
   bottom: 76px;
   position: fixed;
-  right: 16px;
+  right: 24px;
 }

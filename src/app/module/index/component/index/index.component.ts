@@ -248,7 +248,7 @@ export class IndexComponent implements OnInit {
     let index = this.list.findIndex(item => item.musicId === this.nowPlayingMusicId);
     if (index !== -1) {
       const clientHeight = document.getElementsByTagName('mat-list-option')[0].clientHeight;
-      index -= 10;
+      index -= 2;
       index = index < 0 ? 0 : index;
       document.getElementsByTagName('mat-sidenav-content')[0].scrollTop = clientHeight * index;
     }

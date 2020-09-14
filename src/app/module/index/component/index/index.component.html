@@ -25,15 +25,9 @@
                           (selectionChange)="doOnClick($event.option.value)">
         <mat-list-option *ngFor="let item of list;let i=index" [value]="item.musicId"
                          [selected]="item.musicId===nowPlayingMusicId">
-          <div class="music-list-item">
-            <div class="music-list-item-index">{{i + 1}}</div>
-            <div>
-              <div class="music-list-item-name">{{item.name}}</div>
-              <div class="music-list-item-singer">{{item.singer}}</div>
-            </div>
-          </div>
-          <div>
-          </div>
+          <div matListAvatar class="music-list-item-index">{{i + 1}}</div>
+          <h3 matLine>{{item.name}}</h3>
+          <div matLine>{{item.singer}}</div>
         </mat-list-option>
       </mat-selection-list>
       <mat-paginator [length]="originalResponse.totalElements"
