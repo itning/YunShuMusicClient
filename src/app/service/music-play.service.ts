@@ -57,13 +57,16 @@ export class MusicPlayService {
     this.audio.ontimeupdate = this.musicChangeEventHandlers;
 
     this.audio.onended = () => {
-      this.playObserver.next(false);
+      this.changePlayStatus(false);
       this.endObserver.next();
     };
 
     this.audio.onprogress = () => this.loadObserver.next(MusicLoadEvent.LOADING);
     this.audio.oncanplay = () => this.loadObserver.next(MusicLoadEvent.STARTED);
     this.audio.oncanplaythrough = () => this.loadObserver.next(MusicLoadEvent.STARTED);
+
+    this.audio.onplay = () => this.changePlayStatus(true);
+    this.audio.onpause = () => this.changePlayStatus(false);
   }
 
   private musicChangeEventHandlers = () => {
