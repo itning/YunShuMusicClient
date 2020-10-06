@@ -1,27 +1,21 @@
-# YunShuMusicClient
+# 云舒音乐－云舒NAS音乐客户端
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.0.
+[![GitHub stars](https://img.shields.io/github/stars/itning/YunShuMusicClient.svg?style=social&label=Stars)](https://github.com/itning/YunShuMusicClient/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/itning/YunShuMusicClient.svg?style=social&label=Fork)](https://github.com/itning/YunShuMusicClient/network/members)
+[![GitHub watchers](https://img.shields.io/github/watchers/itning/YunShuMusicClient.svg?style=social&label=Watch)](https://github.com/itning/YunShuMusicClient/watchers)
+[![GitHub followers](https://img.shields.io/github/followers/itning.svg?style=social&label=Follow)](https://github.com/itning?tab=followers)
 
-## Development server
+[![GitHub issues](https://img.shields.io/github/issues/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient/issues)
+[![GitHub license](https://img.shields.io/github/license/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient/blob/master/LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient/commits)
+[![GitHub release](https://img.shields.io/github/release/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient/releases)
+[![GitHub repo size in bytes](https://img.shields.io/github/repo-size/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient)
+[![HitCount](http://hits.dwyl.io/itning/YunShuMusicClient.svg)](http://hits.dwyl.io/itning/YunShuMusicClient)
+[![language](https://img.shields.io/badge/language-TypeScript-green.svg)](https://github.com/itning/YunShuMusicClient)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+服务端：[https://github.com/itning/yunshu-nas](https://github.com/itning/yunshu-nas)
 
-## Code scaffolding
+使用Angular编写，支持PWA
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## 预览
+![index](https://raw.githubusercontent.com/itning/YunShuMusicClient/master/pic/index.png)
