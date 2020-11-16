@@ -63,7 +63,7 @@ export class LyricService {
 
         const totalSeconds: number = minute * 60 + second + hundredthsOfASecond / 100;
 
-        return new LrcResult(totalSeconds - 0.5 + this.offset, text);
+        return new LrcResult(totalSeconds - 0.2 + this.offset, text);
       }
     }
   }
