@@ -85,6 +85,7 @@ export class LyricService {
 
   init(lyricId: string): void {
     this.offset = 0;
+    this.lyricArray = [];
     this.fileService.getLyricFile(lyricId)
       .subscribe(file => {
         const line = file.split('\n');
