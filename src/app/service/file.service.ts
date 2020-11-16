@@ -23,4 +23,8 @@ export class FileService {
   getMusicFileUrl(musicId: string): string {
     return `${environment.apiHost}file?id=${musicId}`;
   }
+
+  getLyricFile(lyricId: string): Observable<string> {
+    return this.http.get(`${environment.apiHost}file/lyric?id=${lyricId}`, {responseType: 'text'});
+  }
 }

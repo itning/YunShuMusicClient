@@ -16,6 +16,8 @@ export class SidenavComponent implements OnInit {
   onTimeChangeEvent: Subject<MusicPlaybackDurationChangeEvent>;
   @Input()
   volumeValue = 100;
+  @Input()
+  lyric: string;
   @Output()
   volumeChange = new EventEmitter<number>();
 

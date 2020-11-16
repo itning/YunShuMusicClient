@@ -13,6 +13,7 @@ import {ConfigService} from '../../../../service/config.service';
 import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
 import {filter, mapTo, switchMap} from 'rxjs/operators';
 import {Title} from '@angular/platform-browser';
+import {LyricService} from '../../../../service/lyric.service';
 
 @Component({
   selector: 'app-index',
@@ -33,6 +34,7 @@ export class IndexComponent implements OnInit {
   onTimeChangeEventSubject = new Subject<MusicPlaybackDurationChangeEvent>();
   volumeValue = 1;
   progressMode: ProgressBarMode;
+  lyricString = '';
 
   constructor(private http: HttpClient,
               private snackBar: MatSnackBar,
@@ -40,7 +42,8 @@ export class IndexComponent implements OnInit {
               private musicListService: MusicListService,
               private fileService: FileService,
               private configService: ConfigService,
-              private titleService: Title) {
+              private titleService: Title,
+              private lyricsService: LyricService) {
   }
 
   ngOnInit(): void {
@@ -55,6 +58,10 @@ export class IndexComponent implements OnInit {
     });
     this.musicPlayService.onTimeChangeEvent.subscribe(this.onTimeChangeEventSubject);
     this.onTimeChangeEventSubject.subscribe((time) => {
+      const lyric = this.lyricsService.getLyric(time.nowTime);
+      if (lyric) {
+        this.lyricString = lyric;
+      }
       this.musicTimeChangeEvent = time;
     });
     this.musicPlayService.onPlayEndEvent.subscribe(() => {
@@ -149,12 +156,13 @@ export class IndexComponent implements OnInit {
     }
   }
 
-  doOnClick(musicId: string): void {
-    if (this.nowPlayingMusicId !== musicId) {
-      this.musicPlayService.start(this.fileService.getMusicFileUrl(musicId))
+  doOnClick(music: Music): void {
+    if (this.nowPlayingMusicId !== music.musicId) {
+      this.lyricsService.init(music.lyricId);
+      this.musicPlayService.start(this.fileService.getMusicFileUrl(music.musicId))
         .subscribe((status) => {
           if (status) {
-            this.refreshMusicInfo(musicId);
+            this.refreshMusicInfo(music.musicId);
           } else {
             this.snackBar.open('播放失败', '我知道了');
           }
@@ -210,6 +218,7 @@ export class IndexComponent implements OnInit {
         break;
       case PlayEvent.NEXT:
         const nextMusic = this.musicListService.getNextMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse);
+        this.lyricsService.init(nextMusic.lyricId);
         this.musicPlayService.start(this.fileService.getMusicFileUrl(nextMusic.musicId))
           .subscribe((status) => {
             if (status) {
@@ -221,6 +230,7 @@ export class IndexComponent implements OnInit {
         break;
       case PlayEvent.PREVIOUS:
         const previousMusic = this.musicListService.getPreviousMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse);
+        this.lyricsService.init(previousMusic.lyricId);
         this.musicPlayService.start(this.fileService.getMusicFileUrl(previousMusic.musicId))
           .subscribe((status) => {
             if (status) {

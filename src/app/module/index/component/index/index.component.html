@@ -18,13 +18,14 @@
     <mat-sidenav #sidenav mode="over" class="index-sidenav" fixedInViewport="true">
       <app-sidenav [onTimeChangeEvent]="onTimeChangeEventSubject"
                    [volumeValue]="volumeValue"
-                   (volumeChange)="onVolumeChange($event)"></app-sidenav>
+                   (volumeChange)="onVolumeChange($event)"
+                   [lyric]="lyricString"></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>
       <mat-progress-bar [mode]="progressMode" *ngIf="progressMode" style="position: fixed"></mat-progress-bar>
       <mat-selection-list [multiple]="false"
                           (selectionChange)="doOnClick($event.option.value)">
-        <mat-list-option *ngFor="let item of list;let i=index" [value]="item.musicId"
+        <mat-list-option *ngFor="let item of list;let i=index" [value]="item"
                          [selected]="item.musicId===nowPlayingMusicId">
           <div matListAvatar class="music-list-item-index">{{i + 1}}</div>
           <h3 matLine>{{item.name}}</h3>
