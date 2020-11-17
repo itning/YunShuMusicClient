@@ -58,10 +58,7 @@ export class IndexComponent implements OnInit {
     });
     this.musicPlayService.onTimeChangeEvent.subscribe(this.onTimeChangeEventSubject);
     this.onTimeChangeEventSubject.subscribe((time) => {
-      const lyric = this.lyricsService.getLyric(time.nowTime);
-      if (lyric) {
-        this.lyricString = lyric;
-      }
+      this.lyricsService.update(time.nowTime);
       this.musicTimeChangeEvent = time;
     });
     this.musicPlayService.onPlayEndEvent.subscribe(() => {
@@ -101,6 +98,10 @@ export class IndexComponent implements OnInit {
           this.progressMode = null;
           break;
       }
+    });
+
+    this.lyricsService.onLyricChangeEvent.subscribe(lyric => {
+      this.lyricString = lyric;
     });
   }
 
@@ -158,7 +159,7 @@ export class IndexComponent implements OnInit {
 
   doOnClick(music: Music): void {
     if (this.nowPlayingMusicId !== music.musicId) {
-      this.lyricsService.init(music.lyricId);
+      this.lyricsService.load(music.lyricId);
       this.musicPlayService.start(this.fileService.getMusicFileUrl(music.musicId))
         .subscribe((status) => {
           if (status) {
@@ -218,7 +219,7 @@ export class IndexComponent implements OnInit {
         break;
       case PlayEvent.NEXT:
         const nextMusic = this.musicListService.getNextMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse);
-        this.lyricsService.init(nextMusic.lyricId);
+        this.lyricsService.load(nextMusic.lyricId);
         this.musicPlayService.start(this.fileService.getMusicFileUrl(nextMusic.musicId))
           .subscribe((status) => {
             if (status) {
@@ -230,7 +231,7 @@ export class IndexComponent implements OnInit {
         break;
       case PlayEvent.PREVIOUS:
         const previousMusic = this.musicListService.getPreviousMusic(this.playMode, this.nowPlayingMusicId, this.originalResponse);
-        this.lyricsService.init(previousMusic.lyricId);
+        this.lyricsService.load(previousMusic.lyricId);
         this.musicPlayService.start(this.fileService.getMusicFileUrl(previousMusic.musicId))
           .subscribe((status) => {
             if (status) {
