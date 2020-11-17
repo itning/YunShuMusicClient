@@ -144,6 +144,15 @@ export class LyricService {
           }
         });
         this.lyricArray.sort((a, b) => a.seconds > b.seconds ? 1 : a.seconds === b.seconds ? 0 : -1);
+        if (this.lyricArray.length > 0 && this.metaInfoArray.length > 0) {
+          const firstLyric: LrcResult = this.lyricArray[0];
+          if (firstLyric.seconds > 0) {
+            let index = 0;
+            const itemMetaInfoSecond = firstLyric.seconds / this.metaInfoArray.length;
+            this.metaInfoArray.forEach(item => item.seconds = itemMetaInfoSecond * index++);
+            this.lyricArray.concat(this.metaInfoArray);
+          }
+        }
       });
   }
 }
