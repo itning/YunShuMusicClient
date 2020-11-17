@@ -18,7 +18,8 @@
       <mat-icon>{{nowPlayMode}}</mat-icon>
     </button>
   </div>
-  <div class="control-music-info">{{info}}</div>
+  <div #musicControlInfo class="control-music-info" (mouseover)="stopInterval()"
+       (mouseout)="startInterval()">{{info}}</div>
   <div class="control-slider">
     <mat-slider [step]="sliderStep" [min]="0" [max]="totalTime" [value]="nowTime"
                 (input)="onTimeChange($event)"></mat-slider>
