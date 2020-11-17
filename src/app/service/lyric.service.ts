@@ -131,18 +131,20 @@ export class LyricService {
     this.metaInfoArray = [];
     this.fileService.getLyricFile(lyricId)
       .subscribe(file => {
-        const line = file.split('\n');
-        line.forEach(item => {
-          const lrcResult = this.lyricType(item);
-          if (lrcResult) {
-            if (lrcResult.type === LrcType.LYRIC) {
-              this.lyricArray.push(lrcResult);
+        if (file.length > 0) {
+          const line = file.split('\n');
+          line.forEach(item => {
+            const lrcResult = this.lyricType(item);
+            if (lrcResult) {
+              if (lrcResult.type === LrcType.LYRIC) {
+                this.lyricArray.push(lrcResult);
+              }
+              if (lrcResult.type === LrcType.META_INFO) {
+                this.metaInfoArray.push(lrcResult);
+              }
             }
-            if (lrcResult.type === LrcType.META_INFO) {
-              this.metaInfoArray.push(lrcResult);
-            }
-          }
-        });
+          });
+        }
         this.lyricArray.sort((a, b) => a.seconds > b.seconds ? 1 : a.seconds === b.seconds ? 0 : -1);
         if (this.lyricArray.length > 0 && this.metaInfoArray.length > 0) {
           const firstLyric: LrcResult = this.lyricArray[0];
@@ -152,6 +154,9 @@ export class LyricService {
             this.metaInfoArray.forEach(item => item.seconds = itemMetaInfoSecond * index++);
             this.lyricArray.concat(this.metaInfoArray);
           }
+        }
+        if (this.lyricArray.length === 0) {
+          this.lyricObserver.next('暂无歌词');
         }
       });
   }
