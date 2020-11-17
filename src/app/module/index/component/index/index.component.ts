@@ -101,7 +101,9 @@ export class IndexComponent implements OnInit {
     });
 
     this.lyricsService.onLyricChangeEvent.subscribe(lyric => {
-      this.lyricString = lyric;
+      if (lyric) {
+        this.lyricString = lyric;
+      }
     });
   }
 
