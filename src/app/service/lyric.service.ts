@@ -144,7 +144,6 @@ export class LyricService {
           }
         });
         this.lyricArray.sort((a, b) => a.seconds > b.seconds ? 1 : a.seconds === b.seconds ? 0 : -1);
-        console.log(this.lyricArray);
       });
   }
 }
