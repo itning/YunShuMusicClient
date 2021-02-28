@@ -5,6 +5,7 @@
 [![GitHub watchers](https://img.shields.io/github/watchers/itning/YunShuMusicClient.svg?style=social&label=Watch)](https://github.com/itning/YunShuMusicClient/watchers)
 [![GitHub followers](https://img.shields.io/github/followers/itning.svg?style=social&label=Follow)](https://github.com/itning?tab=followers)
 
+[![Auto Build](https://github.com/itning/YunShuMusicClient/actions/workflows/main.yml/badge.svg)](https://github.com/itning/YunShuMusicClient/actions/workflows/main.yml)
 [![GitHub issues](https://img.shields.io/github/issues/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient/issues)
 [![GitHub license](https://img.shields.io/github/license/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient/blob/master/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient/commits)
