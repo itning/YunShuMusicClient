@@ -11,7 +11,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient/commits)
 [![GitHub release](https://img.shields.io/github/release/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient/releases)
 [![GitHub repo size in bytes](https://img.shields.io/github/repo-size/itning/YunShuMusicClient.svg)](https://github.com/itning/YunShuMusicClient)
-[![HitCount](http://hits.dwyl.io/itning/YunShuMusicClient.svg)](http://hits.dwyl.io/itning/YunShuMusicClient)
+[![HitCount](http://hits.dwyl.com/itning/YunShuMusicClient.svg)](http://hits.dwyl.com/itning/YunShuMusicClient)
 [![language](https://img.shields.io/badge/language-TypeScript-green.svg)](https://github.com/itning/YunShuMusicClient)
 
 服务端：[https://github.com/itning/yunshu-nas](https://github.com/itning/yunshu-nas)
