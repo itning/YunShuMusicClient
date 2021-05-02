@@ -19,4 +19,4 @@
 使用Angular编写，支持PWA
 
 ## 预览
-![index](https://raw.githubusercontent.com/itning/YunShuMusicClient/master/pic/index.png)
+![index](pic/index.png)
